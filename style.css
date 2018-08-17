@@ -1,0 +1,32 @@
+table, td, th {
+    border: 1px solid black;
+}
+
+table {
+    border-collapse: collapse;
+    margin: 20px;
+}
+
+td{
+    /*padding: 7px;*/
+    width: 25px;
+    height: 25px;
+    text-align: center;
+}
+
+#restart{
+    display: inline;
+    margin-left: 20px;
+}
+
+#won{
+    display: none;
+}
+
+#lost{
+    display: none;
+}
+
+#cheat{
+    display: none;
+}

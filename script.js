@@ -16,43 +16,49 @@ $(document).ready(function(){
         Event listeners
     */
     
-    $("td").click(function(){  // left click on cell
+    // left click on cell
+    $("td").click(function(){ 
         if($(this).attr("canClick") == 1){
             var value = $(this).attr("gameValue");
-            if(value == -1){ // mine
-                $("td").attr("canClick", 0);
+            if(value == -1){ // mine - LOST
+                $("td").attr("canClick", 0); // stop the game, cant click on any cell
+                $("#lost").css("display", "block");
             }
             else{ // not mine
                 $(this).html(value); // showing value into cell
                 $("#cheat").attr("uncoveredCells", parseInt($("#cheat").attr("uncoveredCells")) +1); // incrementing uncoredCells
-                if(parseInt($("#cheat").attr("uncoveredCells")) >= parseInt($("#cheat").attr("cellsToUncover"))){ // if uncovered all clear cells then win
+                if(parseInt($("#cheat").attr("uncoveredCells")) >= parseInt($("#cheat").attr("cellsToUncover"))){ // if uncovered all clear cells, WIN
                     $("#won").css("display", "block");
-                    $("td").attr("canClick", 0);
+                    $("td").attr("canClick", 0); // stop the game, cant click on any cell
                 }
             }
             $(this).attr("canClick", 0);
         }
     });
     
-    $("td").contextmenu(function(){ // right click on cell
-        switch($(this).html()) {
-            case "":
-                $(this).html("M");
-                $(this).css("color", "red");
-                $(this).attr("canClick", 0);
-                break;
-            case "M":
-                $(this).html("?");
-                $(this).attr("canClick", 0);
-                 $(this).css("color", "#ba560b");
-                break;
-            case "?":
-                $(this).html("");
-                 $(this).css("color", "black");
-                $(this).attr("canClick", 1);
-                break;
-            default:
-                break;
+    // right click on cell
+    $("td").contextmenu(function(){ 
+        if($("#lost").css("display") != "block" && $("#won").css("display") != "block") // if game still in play
+        {
+            switch($(this).html()) {
+                case "":
+                    $(this).html("M");
+                    $(this).css("color", "red");
+                    $(this).attr("canClick", 0);
+                    break;
+                case "M":
+                    $(this).html("?");
+                    $(this).attr("canClick", 0);
+                     $(this).css("color", "#ba560b");
+                    break;
+                case "?":
+                    $(this).html("");
+                     $(this).css("color", "black");
+                    $(this).attr("canClick", 1);
+                    break;
+                default:
+                    break;
+            }
         }
         return false;
     });

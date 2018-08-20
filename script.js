@@ -2,27 +2,15 @@ $(document).ready(function(){
     
     /*
         Game initialization
-    */
+    */    
     
-    var gameMap1 = [ [ "-1", "2", "1"], // num of mines around, -1 = mine
-                    [ "2", "-1", "2"],
-                    [ "1", "2", "-1"] ];
-    var numberOfClearCells1 = 6;
-    
-    var gameMap2 = [ [ "-1", "2" , "1" , "1" , "1" , "-1", "1" , "0" ], // num of mines around, -1 = mine
-                     [ "1" , "2" , "-1", "1" , "1" , "2" , "2" , "1" ],
-                     [ "1" , "2" , "2" , "1" , "0" , "1" , "-1", "1" ],
-                     [ "1" , "-1", "1" , "0" , "0" , "1" , "1" , "1" ],
-                     [ "2" , "2" , "3" , "1" , "1" , "0" , "1" , "1" ],
-                     [ "1" , "-1", "2" , "-1", "1" , "0" , "1" , "-1"],
-                     [ "1" , "2" , "2" , "2" , "2" , "1" , "1" , "1" ],
-                     [ "-1", "1" , "0" , "1" , "-1", "1" , "0" , "0" ] ];
-    var numberOfClearCells2 = 8*8 - 10;
-    
-    
-    generateHtmlTable(gameMap2);
-    initializeGameValues(gameMap2, numberOfClearCells2);
+    var map3 = generateMap(8);
+    var numberOfClearCells3 = 8*8 - 10;
+
+    generateHtmlTable(map3);
+    initializeGameValues(map3, numberOfClearCells3);
     initialiseGame();
+
     
     /*
         Event listeners
@@ -32,14 +20,12 @@ $(document).ready(function(){
         if($(this).attr("canClick") == 1){
             var value = $(this).attr("gameValue");
             if(value == -1){ // mine
-                $(this).html("x");
-                $("#lost").css("display", "block");
                 $("td").attr("canClick", 0);
             }
             else{ // not mine
-                $(this).html(value);
-                $("#cheat").attr("uncoveredCells", parseInt($("#cheat").attr("uncoveredCells")) +1);
-                if(parseInt($("#cheat").attr("uncoveredCells")) >= parseInt($("#cheat").attr("cellsToUncover"))){
+                $(this).html(value); // showing value into cell
+                $("#cheat").attr("uncoveredCells", parseInt($("#cheat").attr("uncoveredCells")) +1); // incrementing uncoredCells
+                if(parseInt($("#cheat").attr("uncoveredCells")) >= parseInt($("#cheat").attr("cellsToUncover"))){ // if uncovered all clear cells then win
                     $("#won").css("display", "block");
                     $("td").attr("canClick", 0);
                 }
@@ -112,8 +98,135 @@ function initialiseGame(){
     $("#cheat").attr("uncoveredCells", 0);
 }
 
-function generateMap(numberLines){
+function generateMap(numberOfLines){
     var map = [];
-    
+    var currentLine;
+
+    for(var i=0; i<numberOfLines; i++){
+        currentLine = [];
+        for(var j=0; j<numberOfLines; j++){
+            currentLine.push(0);
+        }
+        map.push(currentLine);
+    }
+    var map = initializeMapWithMines(map, numberOfLines);
+    map = fillMapEmptyCells(map);
     return map;
+}
+
+function initializeMapWithMines(map){
+    var numberOfMines = 10;
+    for(var i=0; i<numberOfMines; i++){
+        var minePosition = getRadomPositionInMap(map.length);
+        while(map[minePosition[0]][minePosition[1]] == -1){ // if already a mine, then select another random cell
+            minePosition = getRadomPositionInMap(map.length);
+        }
+        map[minePosition[0]][minePosition[1]] = -1; // place the mine
+    }
+    return map;
+}
+
+function getRadomPositionInMap(mapLength){
+    var a = Math.trunc(Math.random()*mapLength);
+    var b = Math.trunc(Math.random()*mapLength);
+    if(a==8){ // dont want to include 8 but want to include 0 in the random
+        a=0;
+    }
+    if(b==8){
+        b=0;
+    }
+    return [a,b];
+}
+
+function fillMapEmptyCells(map){
+    for(var i=0; i<map.length; i++){
+        for(var j=0; j<map.length; j++){
+            if(map[i][j] != -1){ // not mine
+                map[i][j] = numberOfMinesAround(map, i, j);
+            }
+        }
+    }
+    return map;
+}
+
+function numberOfMinesAround(map, i, j){
+    var n = 0;
+    var leftOK, rightOK, upOK, downOK;
+    // left
+    if((j-1) >= 0 && (j-1) < map.length){
+        leftOK = true;
+    }
+    else{
+        leftOK = false;
+    }
+    // right
+    if((j+1) >= 0 && (j+1) < map.length){
+        rightOK = true;
+    }
+    else{
+        rightOK = false;
+    }
+    // up
+    if((i-1) >= 0 && (i-1) < map.length){
+        upOK = true;
+    }
+    else{
+        upOK = false;
+    }
+    // down
+    if((i+1) >= 0 && (i+1) < map.length){
+        downOK = true;
+    }
+    else{
+        downOK = false;
+    }
+    //up left
+    if(upOK && leftOK){
+        if(map[i-1][j-1] == -1){
+            n++;
+        }
+    }
+    // up
+    if(upOK){
+        if(map[i-1][j] == -1){
+            n++;
+        }
+    }
+    // up right
+    if(upOK && rightOK){
+        if(map[i-1][j+1] == -1){
+            n++;
+        }
+    }
+    // left
+    if(leftOK){
+        if(map[i][j-1] == -1){
+            n++;
+        }
+    }
+    // right
+    if(rightOK){
+        if(map[i][j+1] == -1){
+            n++;
+        }
+    }
+    // down left
+    if(downOK && leftOK){
+        if(map[i+1][j-1] == -1){
+            n++;
+        }
+    }
+    // down
+    if(downOK){
+        if(map[i+1][j] == -1){
+            n++;
+        }
+    }
+    // down right
+    if(downOK && rightOK){
+        if(map[i+1][j+1] == -1){
+            n++;
+        }
+    }
+    return n;
 }

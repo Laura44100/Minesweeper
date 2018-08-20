@@ -5,6 +5,9 @@ $(document).ready(function(){
 
     //Event listeners
     addEventListeners();
+    $("#restart").click(function(){
+        initialiseGame();
+    });
     
 });
 
@@ -69,10 +72,6 @@ function addEventListeners(){
         if(val!="M" && val!="?" && val!="" && minesGuessedAround >= val){
             clickOnCellsAround(cellId);
         }
-    });
-
-    $("#restart").click(function(){
-        initialiseGame();
     });
 }
 

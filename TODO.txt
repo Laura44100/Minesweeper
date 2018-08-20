@@ -1,6 +1,7 @@
 TODO
- - bug clicking restart call initialising function many times
+ - mines left counter
  - empecher selectionner texte dans la case
  - grille autres tailles
  - chrono
  - design
+ - count how many times won in a row

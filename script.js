@@ -1,38 +1,36 @@
 $(document).ready(function(){
     
-    /*
-        Game initialization
-    */    
-    
-    var map3 = generateMap(8);
-    var numberOfClearCells3 = 8*8 - 10;
-
-    generateHtmlTable(map3);
-    initializeGameValues(map3, numberOfClearCells3);
+    // Game initialization 
     initialiseGame();
 
+    //Event listeners
+    addEventListeners();
     
-    /*
-        Event listeners
-    */
-    
+});
+
+function addEventListeners(){
     // left click on cell
     $("td").click(function(){ 
         if($(this).attr("canClick") == 1){
             var value = $(this).attr("gameValue");
             if(value == -1){ // mine - LOST
                 $("td").attr("canClick", 0); // stop the game, cant click on any cell
+                $(this).css("background-color", "red");
                 $("#lost").css("display", "block");
             }
             else{ // not mine
                 $(this).html(value); // showing value into cell
+                $(this).attr("canClick", 0); //cell already clicked
                 $("#cheat").attr("uncoveredCells", parseInt($("#cheat").attr("uncoveredCells")) +1); // incrementing uncoredCells
                 if(parseInt($("#cheat").attr("uncoveredCells")) >= parseInt($("#cheat").attr("cellsToUncover"))){ // if uncovered all clear cells, WIN
                     $("#won").css("display", "block");
                     $("td").attr("canClick", 0); // stop the game, cant click on any cell
                 }
+                if(value == 0){
+                    clickOnCellsAround(parseInt($(this).attr("id")));
+                }
             }
-            $(this).attr("canClick", 0);
+            $(this).attr("canClick", 0); //cell already clicked
         }
     });
     
@@ -63,17 +61,27 @@ $(document).ready(function(){
         return false;
     });
     
+    // double click
+    $("td").dblclick(function(){ 
+        var cellId = parseInt($(this).attr("id"));
+        var minesGuessedAround = numberOfMinesGuessedAroundMatrixCell(cellId);
+        var val = $(this).html();
+        if(val!="M" && val!="?" && val!="" && minesGuessedAround >= val){
+            clickOnCellsAround(cellId);
+        }
+    });
+
     $("#restart").click(function(){
         initialiseGame();
     });
-    
-});
+}
 
 /*
     generates the html table that will define the game matrix
     gameMap MUST be a square array of array
 */
 function generateHtmlTable(gameMap){
+    $("#gameMatrix").html("");  // clear previous html table if any
     var id = 0
     for(var i=0; i<gameMap.length; i++){
         $("#gameMatrix").append("<tr>");
@@ -96,8 +104,19 @@ function initializeGameValues(gameMap, numberOfClearCells){
 }
 
 function initialiseGame(){
+    var map = generateMap(8);
+    console.log(map);
+    var numberOfClearCells = 8*8 - 10;
+    generateHtmlTable(map);
+    initializeGameValues(map, numberOfClearCells);
+    initialiseGameCss();
+    addEventListeners();
+}
+
+function initialiseGameCss(){
     $("td").html("");
-     $("td").css("color", "black");
+    $("td").css("color", "black");
+    $("td").css("background-color", "white");
     $("td").attr("canClick", 1);
     $("#lost").css("display", "none");
     $("#won").css("display", "none");
@@ -148,14 +167,14 @@ function fillMapEmptyCells(map){
     for(var i=0; i<map.length; i++){
         for(var j=0; j<map.length; j++){
             if(map[i][j] != -1){ // not mine
-                map[i][j] = numberOfMinesAround(map, i, j);
+                map[i][j] = numberOfMinesAroundMap(map, i, j);
             }
         }
     }
     return map;
 }
 
-function numberOfMinesAround(map, i, j){
+function numberOfMinesAroundMap(map, i, j){
     var n = 0;
     var leftOK, rightOK, upOK, downOK;
     // left
@@ -235,4 +254,144 @@ function numberOfMinesAround(map, i, j){
         }
     }
     return n;
+}
+
+function numberOfMinesGuessedAroundMatrixCell(cellId){
+    var matrixLength = parseInt($("#gameMatrix").find("tr").length);
+    var upLeftId = cellId - matrixLength -1,
+        upId = cellId - matrixLength,
+        upRightId = cellId - matrixLength + 1,
+        leftId = cellId - 1,
+        rightId = cellId + 1,
+        downLeftId = cellId + matrixLength - 1,
+        downId = cellId + matrixLength,
+        downRightId = cellId + matrixLength + 1;
+    var [leftOK, rightOK, upOK, downOK] = cellsAvailableAround(cellId);
+    var n=0;
+    //up left
+    if(upOK && leftOK){
+        if($("#"+upLeftId).html() == "M"){
+            n++;
+        }
+    }
+    // up
+    if(upOK){
+        if($("#"+upId).html() == "M"){
+            n++;
+        }
+    }
+    // up right
+    if(upOK && rightOK){
+        if($("#"+upRightId).html() == "M"){
+            n++;
+        }
+    }
+    // left
+    if(leftOK){
+        if($("#"+leftId).html() == "M"){
+            n++;
+        }
+    }
+    // right
+    if(rightOK){
+        if($("#"+rightId).html() == "M"){
+            n++;
+        }
+    }
+    // down left
+    if(downOK && leftOK){
+        if($("#"+downLeftId).html() == "M"){
+            n++;
+        }
+    }
+    // down
+    if(downOK){
+        if($("#"+downId).html() == "M"){
+            n++;
+        }
+    }
+    // down right
+    if(downOK && rightOK){
+        if($("#"+downRightId).html() == "M"){
+            n++;
+        }
+    }
+    return n;
+}
+
+function clickOnCellsAround(cellId){
+    var matrixLength = parseInt($("#gameMatrix").find("tr").length);
+    var upLeftId = cellId - matrixLength -1,
+        upId = cellId - matrixLength,
+        upRightId = cellId - matrixLength + 1,
+        leftId = cellId - 1,
+        rightId = cellId + 1,
+        downLeftId = cellId + matrixLength - 1,
+        downId = cellId + matrixLength,
+        downRightId = cellId + matrixLength + 1;
+
+    var [leftOK, rightOK, upOK, downOK] = cellsAvailableAround(cellId);
+
+    //up left
+    if(upOK && leftOK){
+        $("#"+upLeftId).click();
+    }
+    // up
+    if(upOK){
+        $("#"+upId).click();
+    }
+    // up right
+    if(upOK && rightOK){
+        $("#"+upRightId).click();
+    }
+    // left
+    if(leftOK){
+        $("#"+leftId).click();
+    }
+    // right
+    if(rightOK){
+        $("#"+rightId).click();
+    }
+    // down left
+    if(downOK && leftOK){
+        $("#"+downLeftId).click();
+    }
+    // down
+    if(downOK){
+        $("#"+downId).click();
+    }
+    // down right
+    if(downOK && rightOK){
+        $("#"+downRightId).click();
+    }
+}
+
+function cellsAvailableAround(cellId){
+    var matrixLength = parseInt($("#gameMatrix").find("tr").length);
+    var leftOK, rightOK, upOK, downOK;
+    if(cellId%matrixLength != 0){ 
+        leftOK = true;
+    }
+    else{
+        leftOK = false;
+    }
+    if(cellId%matrixLength != 7){ 
+        rightOK = true;
+    }
+    else{
+        rightOK = false;
+    }
+    if(cellId >= matrixLength){ 
+        upOK = true;
+    }
+    else{
+        upOK = false;
+    }
+    if(cellId <= matrixLength*matrixLength-matrixLength){
+        downOK = true;
+    }
+    else{
+        downOK = false;
+    }
+    return [leftOK, rightOK, upOK, downOK];
 }

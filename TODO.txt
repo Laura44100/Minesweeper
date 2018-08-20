@@ -1,0 +1,6 @@
+TODO
+ - bug clicking restart call initialising function many times
+ - empecher selectionner texte dans la case
+ - grille autres tailles
+ - chrono
+ - design

@@ -1,5 +1,4 @@
 $(document).ready(function(){
-    
     // Game initialization 
     initialiseGame();
 
@@ -8,7 +7,6 @@ $(document).ready(function(){
     $("#restart").click(function(){
         initialiseGame();
     });
-    
 });
 
 function addEventListeners(){
@@ -44,11 +42,16 @@ function addEventListeners(){
             switch($(this).html()) {
                 case "":
                     $(this).html("M");
+                    /*var minesLeft = parseInt($("#minesLeft").html());
+                    if(minesLeft > 0){
+                        $("#minesLeft").html(minesLeft - 1);
+                    }*/
                     $(this).css("color", "red");
                     $(this).attr("canClick", 0);
                     break;
                 case "M":
                     $(this).html("?");
+                    // $("#minesLeft").html(parseInt($("#minesLeft").html()) + 1);
                     $(this).attr("canClick", 0);
                      $(this).css("color", "#ba560b");
                     break;
@@ -105,14 +108,15 @@ function initializeGameValues(gameMap, numberOfClearCells){
 function initialiseGame(){
     var map = generateMap(8);
     console.log(map);
-    var numberOfClearCells = 8*8 - 10;
+    var numberOfMines = 10;
+    var numberOfClearCells = 8*8 - numberOfMines;
     generateHtmlTable(map);
     initializeGameValues(map, numberOfClearCells);
-    initialiseGameCss();
+    initialiseGameCss(numberOfMines);
     addEventListeners();
 }
 
-function initialiseGameCss(){
+function initialiseGameCss(numberOfMines){
     $("td").html("");
     $("td").css("color", "black");
     $("td").css("background-color", "white");
@@ -120,6 +124,7 @@ function initialiseGameCss(){
     $("#lost").css("display", "none");
     $("#won").css("display", "none");
     $("#cheat").attr("uncoveredCells", 0);
+    $("#minesLeft").html(numberOfMines);
 }
 
 function generateMap(numberOfLines){

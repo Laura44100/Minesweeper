@@ -133,15 +133,15 @@ function initialiseGame(){
 }
 
 function initialiseGameCss(numberOfMines){
-    $("td").html("");
-    $("td").css("color", "black");
-    $("td").css("background-color", "white");
-    $("td").attr("canClick", 1);
+    $("td").html("")
+           .css({"color": "black", "background-color": "white"})
+           .attr("canClick", 1)
+           .addClass("noselect");
     $("#lost").css("display", "none");
     $("#won").css("display", "none");
-    $("#cheat").attr("uncoveredCells", 0);
-    $("#cheat").attr("numberOfMines", numberOfMines);
-    $("#cheat").attr("minesGuessed", 0);
+    $("#cheat").attr("uncoveredCells", 0)
+               .attr("numberOfMines", numberOfMines)
+               .attr("minesGuessed", 0);
     $("#minesLeft").html(numberOfMines);
 }
 

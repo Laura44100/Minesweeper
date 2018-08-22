@@ -1,5 +1,4 @@
 TODO
- - empecher selectionner texte dans la case
  - count how many times won in a row
  - chrono
  - grille autres tailles

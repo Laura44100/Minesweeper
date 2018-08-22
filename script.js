@@ -1,6 +1,7 @@
 $(document).ready(function(){
     // Game initialization 
     initialiseGame();
+    $("#wonInARow").html(0);
 
     $("#restart").click(function(){
         initialiseGame();
@@ -15,15 +16,18 @@ function addEventListeners(){
             if(value == -1){ // mine - LOST
                 $("td").attr("canClick", 0); // stop the game, cant click on any cell
                 $(this).css("background-color", "red");
-                $("#lost").css("display", "block");
+                $("#lost").css("display", "block"); // showing You Lost message
+                $("#wonInARow").html(0); // resert won in a row counter
             }
             else{ // not mine
                 $(this).html(value); // showing value into cell
                 $(this).attr("canClick", 0); //cell already clicked
                 $("#cheat").attr("uncoveredCells", parseInt($("#cheat").attr("uncoveredCells")) +1); // incrementing uncoredCells
-                if(parseInt($("#cheat").attr("uncoveredCells")) >= parseInt($("#cheat").attr("cellsToUncover"))){ // if uncovered all clear cells, WIN
+                // if uncovered all clear cells, WIN
+                if(parseInt($("#cheat").attr("uncoveredCells")) >= parseInt($("#cheat").attr("cellsToUncover"))){ 
                     $("#won").css("display", "block");
                     $("td").attr("canClick", 0); // stop the game, cant click on any cell
+                    $("#wonInARow").html(parseInt($("#wonInARow").html())+1);
                 }
                 if(value == 0){
                     clickOnCellsAround(parseInt($(this).attr("id")));

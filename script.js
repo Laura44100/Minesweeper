@@ -6,16 +6,49 @@ $(document).ready(function(){
     $("#restart").click(function(){
         initialiseGame();
     });
+    
+    // Timer
+    var x = setInterval(updateTimer, 1000);
+    
+    var test = "TEST OK"
+    
 });
+
+function updateTimer(){
+    if(parseInt($("#cheat").attr("timerOn"))){
+        // get time now
+        var now = new Date().getTime();
+        
+        // find the distance between starting time and now
+        var distance = now - $("#cheat").attr("startingTime");
+        var minutes = Math.floor(distance / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        
+        // display the result
+        $("#chrono").html(minutes + "m " + seconds + "s"); 
+    }
+}
+
+function TESTFUNCTION(){
+    
+}
 
 function addEventListeners(){
     // left click on cell
     $("td").click(function(){ 
+        // if first cell discovered of the game
+        if(!parseInt($("#cheat").attr("timerOn"))){
+            // start timer
+            $("#cheat").attr("startingTime", new Date().getTime())
+                       .attr("timerOn", 1);
+        }
+        
         if($(this).attr("canClick") == 1){
             var value = $(this).attr("gameValue");
             if(value == -1){ // mine - LOST
                 $("td").attr("canClick", 0); // stop the game, cant click on any cell
-                $(this).css("background-color", "red");
+                $("#cheat").attr("timerOn", 0); // stop timer
+                $(this).css("background-color", "red"); 
                 $("#lost").css("display", "block"); // showing You Lost message
                 $("#wonInARow").html(0); // resert won in a row counter
             }
@@ -27,7 +60,8 @@ function addEventListeners(){
                 if(parseInt($("#cheat").attr("uncoveredCells")) >= parseInt($("#cheat").attr("cellsToUncover"))){ 
                     $("#won").css("display", "block");
                     $("td").attr("canClick", 0); // stop the game, cant click on any cell
-                    $("#wonInARow").html(parseInt($("#wonInARow").html())+1);
+                    $("#cheat").attr("timerOn", 0); // stop timer
+                    $("#wonInARow").html(parseInt($("#wonInARow").html())+1); // increment won in a row counter
                 }
                 if(value == 0){
                     clickOnCellsAround(parseInt($(this).attr("id")));
@@ -140,13 +174,16 @@ function initialiseGameCss(numberOfMines){
     $("td").html("")
            .css({"color": "black", "background-color": "white"})
            .attr("canClick", 1)
-           .addClass("noselect");
-    $("#lost").css("display", "none");
-    $("#won").css("display", "none");
-    $("#cheat").attr("uncoveredCells", 0)
-               .attr("numberOfMines", numberOfMines)
-               .attr("minesGuessed", 0);
+           .addClass("noselect");  // clearing matrix cells and enabling them
+    $("#lost").css("display", "none"); // hiding you won message
+    $("#won").css("display", "none"); // hiding you lost message
+    $("#cheat").attr("uncoveredCells", 0) // 0 uncovered cells yet
+               .attr("numberOfMines", numberOfMines) // initializing total number of mines in the game
+               .attr("minesGuessed", 0) // 0 mines guessed yet
+               .attr("startingTime", -1) 
+               .attr("timerOn", 0) // timer off
     $("#minesLeft").html(numberOfMines);
+    $("#chrono").html("0m 0s"); 
 }
 
 function generateMap(numberOfLines){

@@ -2,8 +2,6 @@ $(document).ready(function(){
     // Game initialization 
     initialiseGame();
 
-    //Event listeners
-    addEventListeners();
     $("#restart").click(function(){
         initialiseGame();
     });
@@ -41,23 +39,41 @@ function addEventListeners(){
         {
             switch($(this).html()) {
                 case "":
+                    // updating UI
                     $(this).html("M");
-                    /*var minesLeft = parseInt($("#minesLeft").html());
-                    if(minesLeft > 0){
-                        $("#minesLeft").html(minesLeft - 1);
-                    }*/
                     $(this).css("color", "red");
+                    
+                    // updating mines left counter
+                    var minesGuessed = parseInt($("#cheat").attr("minesGuessed")) + 1;
+                    $("#cheat").attr("minesGuessed", minesGuessed);
+                    var minesLeft = parseInt($("#cheat").attr("numberOfMines")) - minesGuessed;
+                    if(minesLeft < 0) minesLeft = 0;
+                    $("#minesLeft").html(minesLeft);
+                    
+                    // blocking cell
                     $(this).attr("canClick", 0);
                     break;
                 case "M":
+                    // updating UI
                     $(this).html("?");
-                    // $("#minesLeft").html(parseInt($("#minesLeft").html()) + 1);
+                    $(this).css("color", "#ba560b");
+                    
+                    // updating mines left counter
+                    var minesGuessed = parseInt($("#cheat").attr("minesGuessed")) - 1;
+                    $("#cheat").attr("minesGuessed", minesGuessed);
+                    var minesLeft = parseInt($("#cheat").attr("numberOfMines")) - minesGuessed;
+                    if(minesLeft < 0) minesLeft = 0;
+                    $("#minesLeft").html(minesLeft);
+                    
+                    // blocking cell
                     $(this).attr("canClick", 0);
-                     $(this).css("color", "#ba560b");
                     break;
                 case "?":
+                    // updating UI
                     $(this).html("");
-                     $(this).css("color", "black");
+                    $(this).css("color", "black");
+                    
+                    // freeing cell
                     $(this).attr("canClick", 1);
                     break;
                 default:
@@ -124,6 +140,8 @@ function initialiseGameCss(numberOfMines){
     $("#lost").css("display", "none");
     $("#won").css("display", "none");
     $("#cheat").attr("uncoveredCells", 0);
+    $("#cheat").attr("numberOfMines", numberOfMines);
+    $("#cheat").attr("minesGuessed", 0);
     $("#minesLeft").html(numberOfMines);
 }
 

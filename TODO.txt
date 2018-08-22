@@ -1,7 +1,8 @@
 TODO
- - mines left counter
  - empecher selectionner texte dans la case
- - grille autres tailles
- - chrono
- - design
  - count how many times won in a row
+ - chrono
+ - grille autres tailles
+ - design
+
+BUGS:

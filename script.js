@@ -1,9 +1,9 @@
 $(document).ready(function(){
     // Game initialization 
-    initialiseGame();
+    initialiseGame(8, 10);
 
     $("#restart").click(function(){
-        initialiseGame();
+        initialiseGame(8, 10);
     });
     
     // Timer
@@ -28,7 +28,7 @@ function updateTimer(){
 
 function addEventListeners(){
     // left click on cell
-    $("td").click(function(){ 
+    $("td").click(function(){
         // if first cell discovered of the game
         if(!parseInt($("#cheat").attr("timerOn"))){
             // start timer
@@ -40,12 +40,13 @@ function addEventListeners(){
             if(value == -1){ // mine - LOST
                 $("td").attr("canClick", 0); // stop the game, cant click on any cell
                 $("#cheat").attr("timerOn", 0); // stop timer
-                $(this).css({"background-image": "url('mine.png')", "background-color": "#e6e6e6"}); 
+                showAllMines($(this));
+                $(this).css({"background-image": "url('mine.png')", "background-color": "#e6e6e6"});
                 $("#lost").css("display", "block"); // showing You Lost message
             }
             else{ // not mine
                 $(this).html(value); // showing value into cell
-                beautifyCell($(this));
+                beautifyCellWhenClicked($(this));
                 $(this).attr("canClick", 0); // prevent cell fro, clicking again
                 $("#cheat").attr("uncoveredCells", parseInt($("#cheat").attr("uncoveredCells")) +1); // incrementing uncoredCells
                 // if uncovered all clear cells, WIN
@@ -122,104 +123,37 @@ function addEventListeners(){
             clickOnCellsAround(cellId);
         }
     });
+    
+    // click on Easy
+    $("#easy").click(function(){
+        initialiseGame(8, 10);
+    });
+    
+    // click on Interediate
+    $("#intermediate").click(function(){
+        initialiseGame(16, 40);
+    });
+    
+    // click on Expert
+    $("#expert").click(function(){
+        initialiseGame(24, 90);
+    });
+    
 }
 
-function beautifyCell(cell){
-    cell.css("background-color", "#e6e6e6");
-    switch(cell.attr("gameValue")){
-        case "0":
-            cell.css("color", "#808080");
-            break;
-        case "1":
-            cell.css("color", "#0000ff");
-            break;
-        case "2":
-            cell.css("color", "#008000");
-            break;
-        case "3":
-            cell.css("color", "#e60000");
-            break;
-        case "4":
-            cell.css("color", "#000099");
-            break;
-        case "5":
-            cell.css("color", "#800000");
-            break;
-        case "6":
-            cell.css("color", "#006680");
-            break;
-        case "7":
-            cell.css("color", "#800000");
-            break;
-        case "8":
-            cell.css("color", "#400080");
-            break;
-        case "9":
-            cell.css("color", "#992600");
-            break;
-        case "-1":
-            cell.css("color", "black");
-            break;
-    }
-}
-
-/*
-    generates the html table that will define the game matrix
-    gameMap MUST be a square array of array
-*/
-function generateHtmlTable(gameMap){
-    $("#gameMatrix").html("");  // clear previous html table if any
-    var id = 0
-    for(var i=0; i<gameMap.length; i++){
-        $("#gameMatrix").append("<tr>");
-        for(var j=0; j<gameMap[0].length; j++){
-            $("#gameMatrix").append($("<td></td>").attr("id", id));
-            id++;
-        }
-        $("#gameMatrix").append("</tr>");
-    }
-}
-
-function initializeGameValues(gameMap, numberOfClearCells){
-    for(var i=0; i<gameMap.length ; i++){
-        for(var j=0; j<gameMap[0].length ; j++){
-            var n = i * gameMap[0].length + j;
-            $("td#" + n).attr("gameValue", gameMap[i][j]);
-        }
-    }
-    $("#cheat").attr("cellsToUncover", numberOfClearCells);
-}
-
-function initialiseGame(){
+function initialiseGame(matrixSize, nbMines){
     if($("#won").css("display") == "none"){ // if not just won
         $("#wonInARow").html(0); // resert won in a row counter
     }
-    var map = generateMap(8);
-    var numberOfMines = 10;
-    var numberOfClearCells = 8*8 - numberOfMines;
+    var map = generateMap(matrixSize, nbMines);
+    var numberOfClearCells = matrixSize*matrixSize - nbMines;
     generateHtmlTable(map);
     initializeGameValues(map, numberOfClearCells);
-    initialiseGameCss(numberOfMines);
+    initialiseGameCss(nbMines);
     addEventListeners();
 }
 
-function initialiseGameCss(numberOfMines){
-    $("td").html("")
-           .css({"size": "17px", "color": "black", "background-color": "#b3b3b3", "background-image": "none"})
-           .attr("canClick", 1)
-           .addClass("noselect");  // clearing matrix cells and enabling them
-    $("#lost").css("display", "none"); // hiding you won message
-    $("#won").css("display", "none"); // hiding you lost message
-    $("#cheat").attr("uncoveredCells", 0) // 0 uncovered cells yet
-               .attr("numberOfMines", numberOfMines) // initializing total number of mines in the game
-               .attr("minesGuessed", 0) // 0 mines guessed yet
-               .attr("startingTime", -1) 
-               .attr("timerOn", 0) // timer off
-    $("#minesLeft").html(numberOfMines);
-    $("#chrono").html("0m 0s"); 
-}
-
-function generateMap(numberOfLines){
+function generateMap(numberOfLines, numberOfMines){
     var map = [];
     var currentLine;
 
@@ -230,13 +164,12 @@ function generateMap(numberOfLines){
         }
         map.push(currentLine);
     }
-    var map = initializeMapWithMines(map, numberOfLines);
+    var map = initializeMapWithMines(map, numberOfMines);
     map = fillMapEmptyCells(map);
     return map;
 }
 
-function initializeMapWithMines(map){
-    var numberOfMines = 10;
+function initializeMapWithMines(map, numberOfMines){
     for(var i=0; i<numberOfMines; i++){
         var minePosition = getRadomPositionInMap(map.length);
         while(map[minePosition[0]][minePosition[1]] == -1){ // if already a mine, then select another random cell
@@ -351,6 +284,47 @@ function numberOfMinesAroundMap(map, i, j){
     }
     return n;
 }
+
+function generateHtmlTable(gameMap){
+    $("#gameMatrix").html("");  // clear previous html table if any
+    var id = 0
+    for(var i=0; i<gameMap.length; i++){
+        $("#gameMatrix").append("<tr>");
+        for(var j=0; j<gameMap[0].length; j++){
+            $("#gameMatrix").append($("<td></td>").attr("id", id));
+            id++;
+        }
+        $("#gameMatrix").append("</tr>");
+    }
+}
+
+function initializeGameValues(gameMap, numberOfClearCells){
+    for(var i=0; i<gameMap.length ; i++){
+        for(var j=0; j<gameMap[0].length ; j++){
+            var n = i * gameMap[0].length + j;
+            $("td#" + n).attr("gameValue", gameMap[i][j]);
+        }
+    }
+    $("#cheat").attr("cellsToUncover", numberOfClearCells);
+}
+
+function initialiseGameCss(numberOfMines){
+    $("td").html("")
+           .css({"size": "17px", "color": "black", "background-color": "#b3b3b3", "background-image": "none"})
+           .attr("canClick", 1)
+           .addClass("noselect");  // clearing matrix cells and enabling them
+    $("#lost").css("display", "none"); // hiding you won message
+    $("#won").css("display", "none"); // hiding you lost message
+    $("#cheat").attr("uncoveredCells", 0) // 0 uncovered cells yet
+               .attr("numberOfMines", numberOfMines) // initializing total number of mines in the game
+               .attr("minesGuessed", 0) // 0 mines guessed yet
+               .attr("startingTime", -1) 
+               .attr("timerOn", 0); // timer off
+    $("#minesLeft").html(numberOfMines);
+    $("#chrono").html("0m 0s"); 
+}
+
+
 
 function numberOfMinesGuessedAroundMatrixCell(cellId){
     var matrixLength = parseInt($("#gameMatrix").find("tr").length);
@@ -492,3 +466,52 @@ function cellsAvailableAround(cellId){
     return [leftOK, rightOK, upOK, downOK];
 }
 
+
+
+function showAllMines(cell){
+    // first showing the mine selected
+    cell.css({"background-image": "url('mine.png')", "background-color": "#e6e6e6"});
+    // then all other mines with a delay
+    setTimeout(function(){
+        $("td[gameValue='-1']:not(:contains('M'))").css({"background-image": "url('mine.png')", "background-color": "#e6e6e6"}); // all other mines except those marked with flag (html text 'M')
+    }, 700);
+}
+
+function beautifyCellWhenClicked(cell){
+    cell.css("background-color", "#e6e6e6");
+    switch(cell.attr("gameValue")){
+        case "0":
+            cell.css("color", "#808080");
+            break;
+        case "1":
+            cell.css("color", "#0000ff");
+            break;
+        case "2":
+            cell.css("color", "#008000");
+            break;
+        case "3":
+            cell.css("color", "#e60000");
+            break;
+        case "4":
+            cell.css("color", "#000099");
+            break;
+        case "5":
+            cell.css("color", "#800000");
+            break;
+        case "6":
+            cell.css("color", "#006680");
+            break;
+        case "7":
+            cell.css("color", "#800000");
+            break;
+        case "8":
+            cell.css("color", "#400080");
+            break;
+        case "9":
+            cell.css("color", "#992600");
+            break;
+        case "-1":
+            cell.css("color", "black");
+            break;
+    }
+}

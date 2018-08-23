@@ -16,6 +16,18 @@ h1{
     margin-right: auto;
 }
 
+#easy{
+    background-color: #b1d8c1;
+}
+
+#intermediate{
+    background-color: #afc5ea;
+}
+
+#expert{
+    background-color: #f7b5ad;
+}
+
 .smallMargin{
     margin: 4px;
 }
@@ -48,7 +60,7 @@ td{
     background-size: 21px 21px;
 }
 
-#restart{
+button{
     font-family: "Raleway";
     font-size: 16px;
     background-color: #a3d1c8;
@@ -56,6 +68,8 @@ td{
     cursor: pointer;
     border-radius: 15%;
     border: 1px solid #8fb7af;
+    margin-right: 3px;
+    margin-bottom: 22px;
 }
 
 #won{
@@ -64,6 +78,10 @@ td{
 
 #lost{
     display: none;
+}
+
+#restart{
+    margin-bottom: 50px;
 }
 
 #cheat{

@@ -10,8 +10,12 @@ h1{
 }
 
 #container{
-    display: inline-block;
-    padding-left: 25vw;
+    display: block;
+    width: min-content;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 p{

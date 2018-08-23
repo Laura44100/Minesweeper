@@ -1,7 +1,6 @@
 $(document).ready(function(){
     // Game initialization 
     initialiseGame();
-    $("#wonInARow").html(0);
 
     $("#restart").click(function(){
         initialiseGame();
@@ -43,7 +42,6 @@ function addEventListeners(){
                 $("#cheat").attr("timerOn", 0); // stop timer
                 $(this).css({"background-image": "url('mine.png')", "background-color": "#e6e6e6"}); 
                 $("#lost").css("display", "block"); // showing You Lost message
-                $("#wonInARow").html(0); // resert won in a row counter
             }
             else{ // not mine
                 $(this).html(value); // showing value into cell
@@ -193,8 +191,10 @@ function initializeGameValues(gameMap, numberOfClearCells){
 }
 
 function initialiseGame(){
+    if($("#won").css("display") == "none"){ // if not just won
+        $("#wonInARow").html(0); // resert won in a row counter
+    }
     var map = generateMap(8);
-    console.log(map);
     var numberOfMines = 10;
     var numberOfClearCells = 8*8 - numberOfMines;
     generateHtmlTable(map);
@@ -491,3 +491,4 @@ function cellsAvailableAround(cellId){
     }
     return [leftOK, rightOK, upOK, downOK];
 }
+

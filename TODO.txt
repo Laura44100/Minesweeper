@@ -1,6 +1,4 @@
 TODO
- - chrono
-     - start chrono on first cell clicked
  - grille autres tailles
  - design
  - store records? (time record and number of win in a row record)

@@ -10,9 +10,24 @@ $(document).ready(function(){
     // Timer
     var x = setInterval(updateTimer, 1000);
     
-    var test = "TEST OK"
+    // Beautifying
+    beautify();
     
 });
+
+function beautify(){
+    // var w1 = document.getElementById("container").offsetWidth;
+    
+    for(var i=0; i<8; i++){
+        console.log($("#container").children().get(i).offsetWidth);
+    }
+    
+    console.log(window.innerWidth);
+    
+    // $("body").css("padding-left", window.innerWidth);
+    
+    console.log();
+}
 
 function updateTimer(){
     if(parseInt($("#cheat").attr("timerOn"))){
@@ -29,10 +44,6 @@ function updateTimer(){
     }
 }
 
-function TESTFUNCTION(){
-    
-}
-
 function addEventListeners(){
     // left click on cell
     $("td").click(function(){ 
@@ -42,19 +53,19 @@ function addEventListeners(){
             $("#cheat").attr("startingTime", new Date().getTime())
                        .attr("timerOn", 1);
         }
-        
         if($(this).attr("canClick") == 1){
             var value = $(this).attr("gameValue");
             if(value == -1){ // mine - LOST
                 $("td").attr("canClick", 0); // stop the game, cant click on any cell
                 $("#cheat").attr("timerOn", 0); // stop timer
-                $(this).css("background-color", "red"); 
+                $(this).css({"background-image": "url('mine.png')", "background-color": "#e6e6e6"}); 
                 $("#lost").css("display", "block"); // showing You Lost message
                 $("#wonInARow").html(0); // resert won in a row counter
             }
             else{ // not mine
                 $(this).html(value); // showing value into cell
-                $(this).attr("canClick", 0); //cell already clicked
+                beautifyCell($(this));
+                $(this).attr("canClick", 0); // prevent cell fro, clicking again
                 $("#cheat").attr("uncoveredCells", parseInt($("#cheat").attr("uncoveredCells")) +1); // incrementing uncoredCells
                 // if uncovered all clear cells, WIN
                 if(parseInt($("#cheat").attr("uncoveredCells")) >= parseInt($("#cheat").attr("cellsToUncover"))){ 
@@ -79,7 +90,7 @@ function addEventListeners(){
                 case "":
                     // updating UI
                     $(this).html("M");
-                    $(this).css("color", "red");
+                    $(this).css({"font-size": "0", "background-image": "url('flag.png')"});
                     
                     // updating mines left counter
                     var minesGuessed = parseInt($("#cheat").attr("minesGuessed")) + 1;
@@ -94,7 +105,7 @@ function addEventListeners(){
                 case "M":
                     // updating UI
                     $(this).html("?");
-                    $(this).css("color", "#ba560b");
+                    $(this).css({"font-size": "17px", "background-image": "none"});
                     
                     // updating mines left counter
                     var minesGuessed = parseInt($("#cheat").attr("minesGuessed")) - 1;
@@ -130,6 +141,45 @@ function addEventListeners(){
             clickOnCellsAround(cellId);
         }
     });
+}
+
+function beautifyCell(cell){
+    cell.css("background-color", "#e6e6e6");
+    switch(cell.attr("gameValue")){
+        case "0":
+            cell.css("color", "#808080");
+            break;
+        case "1":
+            cell.css("color", "#0000ff");
+            break;
+        case "2":
+            cell.css("color", "#008000");
+            break;
+        case "3":
+            cell.css("color", "#e60000");
+            break;
+        case "4":
+            cell.css("color", "#000099");
+            break;
+        case "5":
+            cell.css("color", "#800000");
+            break;
+        case "6":
+            cell.css("color", "#006680");
+            break;
+        case "7":
+            cell.css("color", "#800000");
+            break;
+        case "8":
+            cell.css("color", "#400080");
+            break;
+        case "9":
+            cell.css("color", "#992600");
+            break;
+        case "-1":
+            cell.css("color", "black");
+            break;
+    }
 }
 
 /*
@@ -172,7 +222,7 @@ function initialiseGame(){
 
 function initialiseGameCss(numberOfMines){
     $("td").html("")
-           .css({"color": "black", "background-color": "white"})
+           .css({"size": "17px", "color": "black", "background-color": "#b3b3b3", "background-image": "none"})
            .attr("canClick", 1)
            .addClass("noselect");  // clearing matrix cells and enabling them
     $("#lost").css("display", "none"); // hiding you won message

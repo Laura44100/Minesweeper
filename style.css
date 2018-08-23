@@ -1,7 +1,6 @@
 body{
     font-family: "Raleway";
-    /*margin-left: 15vw;
-    margin-right: 15vw;*/
+    background-color: #e1efec;
 }
 
 h1{
@@ -11,11 +10,18 @@ h1{
 
 #container{
     display: block;
-    width: min-content;
     margin-top: 1em;
     margin-bottom: 1em;
-    margin-left: auto;
+    margin-left: 15vw;
     margin-right: auto;
+}
+
+.smallMargin{
+    margin: 4px;
+}
+
+.bold{
+    font-weight: bold;
 }
 
 p{
@@ -38,14 +44,18 @@ td{
     height: 20px;
     text-align: center;
     font-weight: 1000;
-    /*background-image: url("flag.jpg");*/
     background-repeat: no-repeat;
     background-size: 21px 21px;
 }
 
 #restart{
-    display: inline;
-    margin-left: 20px;
+    font-family: "Raleway";
+    font-size: 16px;
+    background-color: #a3d1c8;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 15%;
+    border: 1px solid #8fb7af;
 }
 
 #won{

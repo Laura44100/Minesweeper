@@ -9,25 +9,8 @@ $(document).ready(function(){
     
     // Timer
     var x = setInterval(updateTimer, 1000);
-    
-    // Beautifying
-    beautify();
-    
 });
 
-function beautify(){
-    // var w1 = document.getElementById("container").offsetWidth;
-    
-    for(var i=0; i<8; i++){
-        console.log($("#container").children().get(i).offsetWidth);
-    }
-    
-    console.log(window.innerWidth);
-    
-    // $("body").css("padding-left", window.innerWidth);
-    
-    console.log();
-}
 
 function updateTimer(){
     if(parseInt($("#cheat").attr("timerOn"))){

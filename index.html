@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!-- HTML5 Hello world by kirupa - http://www.kirupa.com/html5/getting_your_feet_wet_html5_pg1.htm -->
 <html lang="en-us">
 
 <head>
@@ -15,12 +14,12 @@
 <body>
 	<div id="container">
 		<h1>Minesweeper</h1>
-		<p>Won in a row: <span id="wonInARow"></span></p>
-		<p id="chrono"></p>
+		<p class="smallMargin">Mines left: <span id="minesLeft" class="bold"></span></p>
+		<p id="chrono" class="smallMargin"></p>
 		<table id="gameMatrix"></table>
-		<p>Mines left: <span id="minesLeft"></span></p>
 		<h1 id="won">You Won!</h1>
 		<h1 id="lost">You Lost!</h1>
+		<p>Won in a row: <span id="wonInARow" class="bold"></span></p>
 		<button type="button" id="restart" class="noselect">Restart</button>
 		<p id="cheat"></p>
 	</div>

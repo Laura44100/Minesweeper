@@ -1,6 +1,8 @@
 TODO
  - grille autres tailles
+ - indicate time and won in a row when winning and loosing
  - design
+    - design 'You Won' and 'You Lost' with popup message
  - store records? (time record and number of win in a row record)
 
 BUGS:

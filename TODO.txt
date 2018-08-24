@@ -1,8 +1,9 @@
 TODO
- - grille autres tailles
+ - click droit+gauche = double click
  - set easy, intermediate and expert buttons as button group
  - animate mine appearing when loosing
  - store records? (time record and number of win in a row record)
 
 BUGS:
+ - restart
   

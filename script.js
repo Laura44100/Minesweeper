@@ -1,9 +1,29 @@
 $(document).ready(function(){
     // Game initialization 
     initialiseGame(8, 10);
+    
+    /*
+        Buttons event listeners
+    */
 
+    // click on restart
     $("#restart").click(function(){
         initialiseGame(8, 10);
+    });
+    
+    // click on Easy
+    $("#easy").click(function(){
+        initialiseGame(8, 10);
+    });
+    
+    // click on Interediate
+    $("#intermediate").click(function(){
+        initialiseGame(16, 40);
+    });
+    
+    // click on Expert
+    $("#expert").click(function(){
+        initialiseGame(24, 90);
     });
     
     // Timer
@@ -123,22 +143,6 @@ function addEventListeners(){
             clickOnCellsAround(cellId);
         }
     });
-    
-    // click on Easy
-    $("#easy").click(function(){
-        initialiseGame(8, 10);
-    });
-    
-    // click on Interediate
-    $("#intermediate").click(function(){
-        initialiseGame(16, 40);
-    });
-    
-    // click on Expert
-    $("#expert").click(function(){
-        initialiseGame(24, 90);
-    });
-    
 }
 
 function initialiseGame(matrixSize, nbMines){
@@ -149,6 +153,7 @@ function initialiseGame(matrixSize, nbMines){
     var numberOfClearCells = matrixSize*matrixSize - nbMines;
     generateHtmlTable(map);
     initializeGameValues(map, numberOfClearCells);
+    console.log(map);
     initialiseGameCss(nbMines);
     addEventListeners();
 }
@@ -390,6 +395,7 @@ function numberOfMinesGuessedAroundMatrixCell(cellId){
 }
 
 function clickOnCellsAround(cellId){
+    
     var matrixLength = parseInt($("#gameMatrix").find("tr").length);
     var upLeftId = cellId - matrixLength -1,
         upId = cellId - matrixLength,
@@ -445,7 +451,7 @@ function cellsAvailableAround(cellId){
     else{
         leftOK = false;
     }
-    if(cellId%matrixLength != 7){ 
+    if(cellId%matrixLength != (matrixLength-1)){ 
         rightOK = true;
     }
     else{
@@ -469,12 +475,7 @@ function cellsAvailableAround(cellId){
 
 
 function showAllMines(cell){
-    // first showing the mine selected
-    cell.css({"background-image": "url('mine.png')", "background-color": "#e6e6e6"});
-    // then all other mines with a delay
-    setTimeout(function(){
-        $("td[gameValue='-1']:not(:contains('M'))").css({"background-image": "url('mine.png')", "background-color": "#e6e6e6"}); // all other mines except those marked with flag (html text 'M')
-    }, 700);
+    $("td[gameValue='-1']:not(:contains('M'))").css({"background-image": "url('mine.png')", "background-color": "#e6e6e6"}); // all other mines except those marked with flag (html text 'M')
 }
 
 function beautifyCellWhenClicked(cell){

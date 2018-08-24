@@ -112,3 +112,19 @@ button{
     color: white;
     text-decoration: none;
 }
+
+
+.selected#easy{
+    background-color: #344f3f;
+    color: white; 
+}
+
+.selected#intermediate{
+    background-color: #48648c;
+    color: white;
+}
+
+.selected#expert{
+    background-color: #894942;
+    color: white;
+}

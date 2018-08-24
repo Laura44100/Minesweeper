@@ -1,30 +1,9 @@
 $(document).ready(function(){
     // Game initialization 
-    initialiseGame(8, 10);
+    initIntermediateGame();
     
-    /*
-        Buttons event listeners
-    */
-
-    // click on restart
-    $("#restart").click(function(){
-        initialiseGame(8, 10);
-    });
-    
-    // click on Easy
-    $("#easy").click(function(){
-        initialiseGame(8, 10);
-    });
-    
-    // click on Interediate
-    $("#intermediate").click(function(){
-        initialiseGame(16, 40);
-    });
-    
-    // click on Expert
-    $("#expert").click(function(){
-        initialiseGame(24, 90);
-    });
+    // buttons event listeners
+    addButtonsEventListeners();
     
     // Timer
     var x = setInterval(updateTimer, 1000);
@@ -61,7 +40,6 @@ function addEventListeners(){
                 $("td").attr("canClick", 0); // stop the game, cant click on any cell
                 $("#cheat").attr("timerOn", 0); // stop timer
                 showAllMines($(this));
-                $(this).css({"background-image": "url('mine.png')", "background-color": "#e6e6e6"});
                 $("#lost").css("display", "block"); // showing You Lost message
             }
             else{ // not mine
@@ -92,7 +70,7 @@ function addEventListeners(){
                 case "":
                     // updating UI
                     $(this).html("M");
-                    $(this).css({"font-size": "0", "background-image": "url('flag.png')"});
+                    $(this).css({"font-size": "0", "background-image": "url('flag.png')", "background-size": "100%"});
                     
                     // updating mines left counter
                     var minesGuessed = parseInt($("#cheat").attr("minesGuessed")) + 1;
@@ -108,6 +86,11 @@ function addEventListeners(){
                     // updating UI
                     $(this).html("?");
                     $(this).css({"font-size": "17px", "background-image": "none"});
+                    
+                    // if it was a mine's cell, preload again mine background
+                    if($(this).attr("gameValue") == "-1"){
+                        $(this).css({"background-image": "url('mine.png')", "background-size": "0%"});
+                    }
                     
                     // updating mines left counter
                     var minesGuessed = parseInt($("#cheat").attr("minesGuessed")) - 1;
@@ -145,6 +128,17 @@ function addEventListeners(){
     });
 }
 
+function initEasyGame(){
+    initialiseGame(8, 10);
+}
+function initIntermediateGame(){
+    initialiseGame(16, 40);
+}
+function initExpertGame(){
+    initialiseGame(24, 90);
+}
+
+
 function initialiseGame(matrixSize, nbMines){
     if($("#won").css("display") == "none"){ // if not just won
         $("#wonInARow").html(0); // resert won in a row counter
@@ -153,7 +147,6 @@ function initialiseGame(matrixSize, nbMines){
     var numberOfClearCells = matrixSize*matrixSize - nbMines;
     generateHtmlTable(map);
     initializeGameValues(map, numberOfClearCells);
-    console.log(map);
     initialiseGameCss(nbMines);
     addEventListeners();
 }
@@ -318,6 +311,7 @@ function initialiseGameCss(numberOfMines){
            .css({"size": "17px", "color": "black", "background-color": "#b3b3b3", "background-image": "none"})
            .attr("canClick", 1)
            .addClass("noselect");  // clearing matrix cells and enabling them
+    $("td[gameValue='-1']").css({"background-image": "url('mine.png')", "background-size": "0%"}); //pre-loading mines background image but not showing them (size:0)
     $("#lost").css("display", "none"); // hiding you won message
     $("#won").css("display", "none"); // hiding you lost message
     $("#cheat").attr("uncoveredCells", 0) // 0 uncovered cells yet
@@ -329,6 +323,48 @@ function initialiseGameCss(numberOfMines){
     $("#chrono").html("0m 0s"); 
 }
 
+function addButtonsEventListeners(){
+    // click on Easy
+    $("#easy").click(function(){
+        initEasyGame(); // initialise small matrix game
+        $("#easy").addClass("selected");
+        $("#intermediate").removeClass("selected");
+        $("#expert").removeClass("selected");
+        
+    });
+    
+    // click on Interediate
+    $("#intermediate").click(function(){
+        initIntermediateGame(); // initialise medium matrix game
+        $("#easy").removeClass("selected");
+        $("#intermediate").addClass("selected");
+        $("#expert").removeClass("selected");
+    });
+    
+    // click on Expert
+    $("#expert").click(function(){
+        initExpertGame(); // initialise large matrix game
+        $("#easy").removeClass("selected");
+        $("#intermediate").removeClass("selected");
+        $("#expert").addClass("selected");
+    });
+    
+    // click on restart
+    $("#restart").click(function(){
+        if($("#easy").hasClass("selected")){
+            initEasyGame();
+        }
+        else if($("#intermediate").hasClass("selected")){
+            initIntermediateGame();
+        }
+        else if($("#expert").hasClass("selected")){
+            initExpertGame();
+        }
+        else{
+            initEasyGame();
+        }
+    });
+}
 
 
 function numberOfMinesGuessedAroundMatrixCell(cellId){
@@ -473,9 +509,9 @@ function cellsAvailableAround(cellId){
 }
 
 
-
 function showAllMines(cell){
-    $("td[gameValue='-1']:not(:contains('M'))").css({"background-image": "url('mine.png')", "background-color": "#e6e6e6"}); // all other mines except those marked with flag (html text 'M')
+    $("td[gameValue='-1']:not(:contains('M'))").css({"background-size": "100%", "background-color": "#e6e6e6"}); // all other mines except those marked with flag (html text 'M')
+    cell.css("background-color", "#e56464");
 }
 
 function beautifyCellWhenClicked(cell){

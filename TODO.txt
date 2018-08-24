@@ -1,9 +1,6 @@
 TODO
- - click droit+gauche = double click
- - set easy, intermediate and expert buttons as button group
- - animate mine appearing when loosing
+ - when loosing, if there are flags misplaced, cross them
  - store records? (time record and number of win in a row record)
 
 BUGS:
- - restart
   

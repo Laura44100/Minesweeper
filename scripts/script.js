@@ -40,6 +40,7 @@ function addEventListeners(){
                 $("td").attr("canClick", 0); // stop the game, cant click on any cell
                 $("#cheat").attr("timerOn", 0); // stop timer
                 showAllMines($(this));
+                crossWrongFlags();
                 $("#lost").css("display", "block"); // showing You Lost message
             }
             else{ // not mine
@@ -70,7 +71,7 @@ function addEventListeners(){
                 case "":
                     // updating UI
                     $(this).html("M");
-                    $(this).css({"font-size": "0", "background-image": "url('flag.png')", "background-size": "100%"});
+                    $(this).css({"font-size": "0", "background-image": "url('images/flag.png')", "background-size": "100%"});
                     
                     // updating mines left counter
                     var minesGuessed = parseInt($("#cheat").attr("minesGuessed")) + 1;
@@ -89,7 +90,7 @@ function addEventListeners(){
                     
                     // if it was a mine's cell, preload again mine background
                     if($(this).attr("gameValue") == "-1"){
-                        $(this).css({"background-image": "url('mine.png')", "background-size": "0%"});
+                        $(this).css({"background-image": "url('images/mine.png')", "background-size": "0%"});
                     }
                     
                     // updating mines left counter
@@ -311,7 +312,7 @@ function initialiseGameCss(numberOfMines){
            .css({"size": "17px", "color": "black", "background-color": "#b3b3b3", "background-image": "none"})
            .attr("canClick", 1)
            .addClass("noselect");  // clearing matrix cells and enabling them
-    $("td[gameValue='-1']").css({"background-image": "url('mine.png')", "background-size": "0%"}); //pre-loading mines background image but not showing them (size:0)
+    $("td[gameValue='-1']").css({"background-image": "url('images/mine.png')", "background-size": "0%"}); //pre-loading mines background image but not showing them (size:0)
     $("#lost").css("display", "none"); // hiding you won message
     $("#won").css("display", "none"); // hiding you lost message
     $("#cheat").attr("uncoveredCells", 0) // 0 uncovered cells yet
@@ -512,6 +513,11 @@ function cellsAvailableAround(cellId){
 function showAllMines(cell){
     $("td[gameValue='-1']:not(:contains('M'))").css({"background-size": "100%", "background-color": "#e6e6e6"}); // all other mines except those marked with flag (html text 'M')
     cell.css("background-color", "#e56464");
+}
+
+function crossWrongFlags(){
+    $("td[gameValue!='-1']:contains('M')").css("background-image", "url(images/flag.png), linear-gradient(to bottom right, transparent calc(50% - 3px), red, transparent calc(50% + 3px))")
+                                          .css("background-size", "100%, 100%");
 }
 
 function beautifyCellWhenClicked(cell){

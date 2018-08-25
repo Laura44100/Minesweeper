@@ -1,6 +1,7 @@
 TODO
- - when loosing, if there are flags misplaced, cross them
+ - google analytics
  - store records? (time record and number of win in a row record)
 
 BUGS:
+ - when lost, timer stops but then if clicking on a cell before restarting game it restartes the timer
   

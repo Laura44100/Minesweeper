@@ -1,0 +1,130 @@
+body{
+    font-family: "Raleway";
+    background-color: #e1efec;
+}
+
+h1{
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+#container{
+    display: block;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    margin-left: 15vw;
+    margin-right: auto;
+}
+
+#easy{
+    background-color: #b1d8c1;
+}
+
+#intermediate{
+    background-color: #afc5ea;
+}
+
+#expert{
+    background-color: #f7b5ad;
+}
+
+.smallMargin{
+    margin: 4px;
+}
+
+.bold{
+    font-weight: bold;
+}
+
+p{
+    width: auto;
+}
+
+table, td, th {
+    border: 1px solid black;
+}
+
+table {
+    border-collapse: collapse;
+    border: 3px;
+    margin: 20px;
+    font-size: 17px;
+}
+
+td{
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    font-weight: 1000;
+    background-repeat: no-repeat;
+    background-size: 21px 21px;
+}
+
+button{
+    font-family: "Raleway";
+    font-size: 16px;
+    background-color: #a3d1c8;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 15%;
+    border: 1px solid #8fb7af;
+    margin-right: 3px;
+    margin-bottom: 22px;
+}
+
+#won{
+    display: none;
+}
+
+#lost{
+    display: none;
+}
+
+#restart{
+    margin-bottom: 50px;
+}
+
+#cheat{
+    display: none;
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+
+.footer{
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #135446;
+    color: #8fbab1;
+    text-align: center;
+}
+
+#myName{
+    color: white;
+    text-decoration: none;
+}
+
+
+.selected#easy{
+    background-color: #344f3f;
+    color: white; 
+}
+
+.selected#intermediate{
+    background-color: #48648c;
+    color: white;
+}
+
+.selected#expert{
+    background-color: #894942;
+    color: white;
+}

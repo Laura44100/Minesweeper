@@ -52,6 +52,7 @@ function addEventListeners(){
                 if(parseInt($("#cheat").attr("uncoveredCells")) >= parseInt($("#cheat").attr("cellsToUncover"))){ 
                     $("#won").css("display", "block");
                     $("td").attr("canClick", 0); // stop the game, cant click on any cell
+                    fillEmptyCellsWithFlags();
                     $("#cheat").attr("timerOn", 0); // stop timer
                     $("#wonInARow").html(parseInt($("#wonInARow").html())+1); // increment won in a row counter
                 }
@@ -509,6 +510,9 @@ function cellsAvailableAround(cellId){
     return [leftOK, rightOK, upOK, downOK];
 }
 
+function fillEmptyCellsWithFlags(){
+    $(":empty").css({"background-image": "url('minesweeper/images/flag.png')", "background-size": "100%"});
+}
 
 function showAllMines(cell){
     $("td[gameValue='-1']:not(:contains('M'))").css({"background-size": "100%", "background-color": "#e6e6e6"}); // all other mines except those marked with flag (html text 'M')

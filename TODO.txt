@@ -1,8 +1,6 @@
 TODO
  - change restart button location
- - when winning, fill empty cells with flags
  - google analytics
- - jquery min, put it in main script folder in server
  - store records? (time record and number of win in a row record)
 
 BUGS:

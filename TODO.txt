@@ -1,5 +1,6 @@
 TODO
  - google analytics
+ - popup when winning or loosing
  - store records? (time record and number of win in a row record)
 
 BUGS:

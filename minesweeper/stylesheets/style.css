@@ -48,7 +48,8 @@ table {
     border-collapse: collapse;
     border: 3px;
     margin: 20px;
-    font-size: 17px;
+    font-family: Arial;
+    font-size: 14px;
 }
 
 td{

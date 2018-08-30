@@ -1,7 +1,7 @@
 TODO
+ - change restart button location
  - google analytics
  - store records? (time record and number of win in a row record)
 
 BUGS:
- - when lost, timer stops but then if clicking on a cell before restarting game it restartes the timer
   

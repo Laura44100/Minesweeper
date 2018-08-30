@@ -1,5 +1,4 @@
 TODO
- - change font family for numbers in matrix
  - change restart button location
  - when winning, fill empty cells with flags
  - google analytics

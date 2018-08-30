@@ -71,7 +71,7 @@ function addEventListeners(){
                 case "":
                     // updating UI
                     $(this).html("M");
-                    $(this).css({"font-size": "0", "background-image": "url('images/flag.png')", "background-size": "100%"});
+                    $(this).css({"font-size": "0", "background-image": "url('minesweeper/images/flag.png')", "background-size": "100%"});
                     
                     // updating mines left counter
                     var minesGuessed = parseInt($("#cheat").attr("minesGuessed")) + 1;
@@ -90,7 +90,7 @@ function addEventListeners(){
                     
                     // if it was a mine's cell, preload again mine background
                     if($(this).attr("gameValue") == "-1"){
-                        $(this).css({"background-image": "url('images/mine.png')", "background-size": "0%"});
+                        $(this).css({"background-image": "url('minesweeper/images/mine.png')", "background-size": "0%"});
                     }
                     
                     // updating mines left counter
@@ -312,7 +312,7 @@ function initialiseGameCss(numberOfMines){
            .css({"size": "17px", "color": "black", "background-color": "#b3b3b3", "background-image": "none"})
            .attr("canClick", 1)
            .addClass("noselect");  // clearing matrix cells and enabling them
-    $("td[gameValue='-1']").css({"background-image": "url('images/mine.png')", "background-size": "0%"}); //pre-loading mines background image but not showing them (size:0)
+    $("td[gameValue='-1']").css({"background-image": "url('minesweeper/images/mine.png')", "background-size": "0%"}); //pre-loading mines background image but not showing them (size:0)
     $("#lost").css("display", "none"); // hiding you won message
     $("#won").css("display", "none"); // hiding you lost message
     $("#cheat").attr("uncoveredCells", 0) // 0 uncovered cells yet
@@ -516,7 +516,7 @@ function showAllMines(cell){
 }
 
 function crossWrongFlags(){
-    $("td[gameValue!='-1']:contains('M')").css("background-image", "url(images/flag.png), linear-gradient(to bottom right, transparent calc(50% - 3px), red, transparent calc(50% + 3px))")
+    $("td[gameValue!='-1']:contains('M')").css("background-image", "url(minesweeper/images/flag.png), linear-gradient(to bottom right, transparent calc(50% - 3px), red, transparent calc(50% + 3px))")
                                           .css("background-size", "100%, 100%");
 }
 

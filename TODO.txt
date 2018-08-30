@@ -1,5 +1,4 @@
 TODO
- - change restart button location
  - google analytics
  - store records? (time record and number of win in a row record)
 

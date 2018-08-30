@@ -29,7 +29,8 @@ h1{
 }
 
 .smallMargin{
-    margin: 4px;
+    margin-top: 4px;
+    margin-bottom: 4px;
 }
 
 .bold{
@@ -70,7 +71,7 @@ button{
     border-radius: 15%;
     border: 1px solid #8fb7af;
     margin-right: 3px;
-    margin-bottom: 22px;
+    margin-bottom: 15px;
 }
 
 #won{
@@ -79,10 +80,6 @@ button{
 
 #lost{
     display: none;
-}
-
-#restart{
-    margin-bottom: 50px;
 }
 
 #cheat{

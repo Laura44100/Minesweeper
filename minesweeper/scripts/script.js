@@ -86,7 +86,7 @@ function addEventListeners(){
                 case "M":
                     // updating UI
                     $(this).html("?");
-                    $(this).css({"font-size": "17px", "background-image": "none"});
+                    $(this).css({"font-size": "14px", "background-image": "none"});
                     
                     // if it was a mine's cell, preload again mine background
                     if($(this).attr("gameValue") == "-1"){
@@ -309,7 +309,7 @@ function initializeGameValues(gameMap, numberOfClearCells){
 
 function initialiseGameCss(numberOfMines){
     $("td").html("")
-           .css({"size": "17px", "color": "black", "background-color": "#b3b3b3", "background-image": "none"})
+           .css({"size": "14px", "color": "black", "background-color": "#b3b3b3", "background-image": "none"})
            .attr("canClick", 1)
            .addClass("noselect");  // clearing matrix cells and enabling them
     $("td[gameValue='-1']").css({"background-image": "url('minesweeper/images/mine.png')", "background-size": "0%"}); //pre-loading mines background image but not showing them (size:0)

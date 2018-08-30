@@ -1,5 +1,4 @@
 TODO
- - change structure to match 1and1
  - change font family for numbers in matrix
  - change restart button location
  - when winning, fill empty cells with flags
@@ -8,5 +7,4 @@ TODO
  - store records? (time record and number of win in a row record)
 
 BUGS:
- - when lost, timer stops but then if clicking on a cell before restarting game it restartes the timer
   

@@ -29,7 +29,7 @@ function addEventListeners(){
     // left click on cell
     $("td").click(function(){
         // if first cell discovered of the game
-        if(!parseInt($("#cheat").attr("timerOn"))){
+        if(!parseInt($("#cheat").attr("timerOn")) && $("#won").css("display") == "none" && $("#lost").css("display") == "none"){
             // start timer
             $("#cheat").attr("startingTime", new Date().getTime())
                        .attr("timerOn", 1);
